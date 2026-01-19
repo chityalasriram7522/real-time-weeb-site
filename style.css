@@ -23,9 +23,9 @@ body {
 }
 
 .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 0.9rem; }
-.app-logo {
-    width: 32px; height: 32px; background: var(--primary);
-    border-radius: 8px; display: grid; place-items: center; font-weight: 800; color: white;
+.app-logo img{
+    width: 32px; height: 32px;;
+    border-radius: 8px; display: grid; place-items: center; font-weight: 800; color:black;
 }
 
 .live-indicator { background: var(--glass); padding: 5px 12px; border-radius: 20px; font-size: 0.7rem; display: flex; align-items: center; gap: 6px; }
@@ -287,47 +287,88 @@ input:focus { border-color: var(--primary); }
 .sub-text { color: #666; font-size: 0.8rem; }
 
 @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-:root { --primary: #ff5f1f; --dark: #0f1113; --card-bg: #1c1f23; }
-* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-body { background: var(--dark); color: white; font-family: 'Plus Jakarta Sans', sans-serif; overflow: hidden; }
+/* Color Variables */
+:root { 
+    --primary: #ff5f1f; --dark: #0f1113; --card-bg: #1c1f23; 
+    --text: #ffffff; --error: #ff4d4d; --glass: rgba(255, 255, 255, 0.05);
+}
+body.white-mode { --dark: #f2f2f7; --card-bg: #ffffff; --text: #000000; }
 
-/* Global UI */
-.app-header { position: fixed; top: 0; width: 100%; padding: 20px; display: flex; justify-content: space-between; align-items: center; background: rgba(15,17,19,0.9); backdrop-filter: blur(10px); z-index: 100; border-bottom: 1px solid #222; }
-.app-logo { width: 32px; height: 32px; background: var(--primary); border-radius: 8px; display: grid; place-items: center; font-weight: 800; color: white; }
-.screen { position: absolute; top: 0; left: 0; width: 100%; height: 100vh; padding: 100px 20px 120px; display: none; overflow-y: auto; }
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+body { background: var(--dark); color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; overflow: hidden; transition: 0.4s; }
+
+/* Header */
+.app-header { position: fixed; top: 0; width: 100%; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; background: var(--dark); backdrop-filter: blur(15px); z-index: 1000; border-bottom: 1px solid rgba(128,128,128,0.1); }
+.header-actions { display: flex; align-items: center; gap: 10px; }
+.theme-btn { background: none; border: none; font-size: 1.5rem; color: var(--text); cursor: pointer; display: flex; }
+.app-logo { width: 32px; height: 32px; background: var(--primary); border-radius: 8px; color: white; display: grid; place-items: center; font-weight: 800; }
+
+/* Screens */
+.screen { position: absolute; top: 0; left: 0; width: 100%; height: 100vh; padding: 100px 20px 100px; display: none; overflow-y: auto; }
 .screen.active { display: flex; flex-direction: column; }
 
-/* Buttons */
+/* Inputs & Validation */
+input, select, textarea { background: var(--card-bg); border: 1px solid rgba(128,128,128,0.2); padding: 16px; border-radius: 16px; color: var(--text); width: 100%; margin-bottom: 8px; outline: none; }
+.invalid-input { border-color: var(--error) !important; background: rgba(255, 77, 77, 0.05) !important; }
+.err-msg { color: var(--error); font-size: 0.7rem; font-weight: 700; margin-top: -5px; margin-bottom: 10px; display: none; margin-left: 5px; }
+
+/* Cards & Components */
+.donate-card, .wait-card, .info-tile, .manual-box-wrap { background: var(--card-bg); border: 1px solid rgba(128,128,128,0.2); padding: 20px; border-radius: 20px; margin-bottom: 12px; }
 .cta-primary { background: var(--primary); color: white; border: none; padding: 18px; border-radius: 18px; font-weight: 800; width: 100%; cursor: pointer; }
-.back-nav-btn { background: #222; border: none; color: white; padding: 10px 15px; border-radius: 10px; margin-bottom: 15px; width: fit-content; font-weight: 700; cursor: pointer; }
+.cta-secondary { background: var(--text); color: var(--dark); border: none; padding: 15px; border-radius: 15px; font-weight: 800; width: 100%; cursor: pointer; }
+.btn-back { background: none; border: none; color: #888; margin-top: 15px; font-weight: 700; cursor: pointer; text-decoration: underline; width: 100%; }
 
-/* Profile & Reg ID Badge */
-.reg-id-badge { background: rgba(255, 95, 31, 0.15); color: var(--primary); padding: 6px 14px; border-radius: 20px; font-size: 0.75rem; font-weight: 800; width: fit-content; margin: 0 auto 15px; border: 1px solid var(--primary); letter-spacing: 1px; }
-.profile-card-native { background: var(--card-bg); border-radius: 25px; overflow: hidden; }
-.profile-header-bg { background: var(--primary); padding: 30px; text-align: center; }
-.profile-details { padding: 30px 20px; text-align: center; }
-
-/* Bento & Contact Hub */
-.bento-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.bento-card { border-radius: 24px; padding: 20px; display: flex; flex-direction: column; justify-content: flex-end; min-height: 140px; }
-.tall { grid-row: span 2; min-height: 280px; }
-.orange { background: var(--primary); }
-.red { background: #ef4444; }
+/* Impact Grid */
+.bento-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+.bento-card { border-radius: 24px; padding: 20px; display: flex; flex-direction: column; justify-content: flex-end; }
+.tall { grid-row: span 2; min-height: 240px; }
+.orange { background: var(--primary); color: white; }
 .dark { background: var(--card-bg); border: 1px solid rgba(255,255,255,0.05); }
-.count { font-size: 2rem; font-weight: 800; display: block; }
-.social-card { background: var(--card-bg); padding: 18px; border-radius: 20px; text-decoration: none; color: white; font-size: 0.8rem; font-weight: 600; display: flex; align-items: center; gap: 10px; border: 1px solid #333; }
-.contact-row { background: var(--card-bg); padding: 16px; border-radius: 22px; display: flex; align-items: center; gap: 15px; text-decoration: none; color: white; margin-bottom: 10px; border: 1px solid #333; }
-.icon-circle { width: 40px; height: 40px; background: rgba(255,255,255,0.05); border-radius: 50%; display: grid; place-items: center; }
+.count { font-size: 1.8rem; font-weight: 800; }
 
-/* Form & Wait Screen */
-input, select { background: var(--card-bg); border: 1px solid #333; padding: 15px; border-radius: 14px; color: white; width: 100%; outline: none; margin-bottom: 10px; }
-.err { color: #ff4d4d; font-size: 0.75rem; display: none; margin-bottom: 5px; }
-.timer-icon { font-size: 3rem; animation: rotate 2s linear infinite; }
-.progress-bar-wrap { width: 100%; height: 6px; background: #222; border-radius: 10px; margin-top: 20px; overflow: hidden; }
-.progress-fill { width: 0%; height: 100%; background: var(--primary); }
-@keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+/* About Section */
+.profile-section { text-align: center; padding: 20px 0; }
+.profile-img { width: 80px; height: 80px; background: #333; border-radius: 50%; margin: 0 auto 15px; border: 2px solid var(--primary); background-image: url('logo.png'); background-size: cover; }
+.social-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+.social-card { background: var(--card-bg); padding: 16px; border-radius: 18px; text-decoration: none; color: var(--text); font-weight: 700; display: flex; align-items: center; gap: 10px; border: 1px solid rgba(128,128,128,0.1); }
+.contact-list { display: flex; flex-direction: column; gap: 10px; }
+.contact-row { background: var(--card-bg); padding: 18px; border-radius: 22px; display: flex; align-items: center; gap: 15px; text-decoration: none; color: var(--text); border: 1px solid rgba(128,128,128,0.1); }
+.icon-circle { width: 45px; height: 45px; background: rgba(255,255,255,0.05); border-radius: 50%; display: grid; place-items: center; font-size: 1.2rem; }
 
-/* Nav Dock */
-.nav-dock { position: fixed; bottom: 20px; left: 20px; right: 20px; background: #1c1f23; border-radius: 25px; display: flex; justify-content: space-around; padding: 12px; z-index: 1000; border: 1px solid #333; }
+/* Nav */
+.nav-dock { position: fixed; bottom: 20px; left: 20px; right: 20px; background: var(--card-bg); border-radius: 25px; display: flex; justify-content: space-around; padding: 12px; border: 1px solid rgba(128,128,128,0.2); z-index: 1000; }
 .nav-item { background: none; border: none; color: #666; display: flex; flex-direction: column; align-items: center; font-size: 0.6rem; cursor: pointer; }
 .nav-item.active { color: var(--primary); }
+
+.timer-icon { font-size: 4rem; margin-bottom: 20px; text-align: center; }
+.rotate { animation: spin 2s linear infinite; }
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+#error-page h2 { 
+    color: #ff4d4d; 
+    margin-bottom: 10px; 
+}
+
+#error-page .wait-card { 
+    border: 2px solid #ff4d4d; 
+    background: rgba(255, 77, 77, 0.05);
+}
+
+.timer-icon.no-rotate {
+    animation: none !important;
+    font-size: 4rem;
+}
+/* Restored Bento Grid Impact */
+.bento-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
+.bento-card { border-radius: 24px; padding: 20px; display: flex; flex-direction: column; justify-content: flex-end; border: 1px solid rgba(255,255,255,0.05); }
+.tall { grid-row: span 2; min-height: 260px; }
+.orange { background: var(--primary); color: white; }
+.dark { background: var(--card-bg); }
+.gold-border { border: 1px solid #f59e0b !important; }
+
+/* Restored About Section Styles */
+.about-scroll-container { display: flex; flex-direction: column; gap: 10px; }
+.profile-section { text-align: center; padding: 20px 0; }
+.profile-img { width: 80px; height: 80px; background: #333; border-radius: 50%; margin: 0 auto 15px; border: 2px solid var(--primary); background-image: url('logo.png'); background-size: cover; }
+.contact-list { display: flex; flex-direction: column; gap: 10px; }
+.contact-row { background: var(--card-bg); padding: 18px; border-radius: 22px; display: flex; align-items: center; gap: 15px; text-decoration: none; color: white; border: 1px solid rgba(255,255,255,0.05); }
+.icon-circle { width: 45px; height: 45px; background: rgba(255,255,255,0.05); border-radius: 50%; display: grid; place-items: center; font-size: 1.2rem; }

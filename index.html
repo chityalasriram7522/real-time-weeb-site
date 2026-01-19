@@ -6,23 +6,25 @@
     <title>Dwaraka Foundation</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
-    
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script type="text/javascript">
-       (function(){
-          // EDIT: Replace 'YOUR_PUBLIC_KEY' with your Public Key from EmailJS
-          emailjs.init("YOUR_PUBLIC_KEY"); 
-       })();
+       (function(){ emailjs.init("YOUR_PUBLIC_KEY"); })();
     </script>
 </head>
-<body>
+<body class="dark-mode">
 
     <header class="app-header">
-        <div class="brand" onclick="goHome()" style="cursor: pointer;">
-            <div class="app-logo">D</div>
+        <div class="brand" onclick="goHome()">
+            <div class="app-logo"><img src="logo.jpeg" alt=""></div>
             <span>Dwaraka Foundation</span>
         </div>
-        <div class="live-indicator"><span class="pulse-dot"></span> Active</div>
+        <div class="header-actions">
+            <button id="theme-toggle" class="theme-btn">
+                <ion-icon name="moon-outline" id="theme-icon"></ion-icon>
+            </button>
+            <div class="live-indicator"><span class="pulse-dot"></span> Live</div>
+        </div>
     </header>
 
     <div id="app-content">
@@ -30,6 +32,7 @@
             <div class="hero-image">
                 <div class="hero-overlay">
                     <h1 class="animate-text">Feeding Souls.<br>Saving Lives.</h1>
+                    <p class="animate-text">Your small contribution creates a lifetime of hope.</p>
                     <button class="cta-primary animate-text" onclick="showScreen('donate-selection')">Donate Food Now</button>
                 </div>
             </div>
@@ -39,60 +42,89 @@
             <button class="back-nav-btn" onclick="showScreen('home')">← Back</button>
             <h2 class="section-title">Support Level</h2>
             <div class="donation-options">
-                <div class="donate-card" onclick="setAmountAndRegister(1500)">
-                    <h3>40 Food Boxes</h3>
+                <div class="donate-card" onclick="setAmountAndRegister(1500, '40 Food Boxes')">
+                    <div class="card-info"><h3>40 Food Boxes</h3></div>
                     <span class="amount">₹1500</span>
                 </div>
-                <div class="donate-card" onclick="setAmountAndRegister(2000)">
-                    <h3>70 Food Boxes</h3>
+                <div class="donate-card" onclick="setAmountAndRegister(2000, '70 Food Boxes')">
+                    <div class="card-info"><h3>70 Food Boxes</h3></div>
                     <span class="amount">₹2000</span>
                 </div>
                 <div class="manual-box-wrap">
-                    <label class="group-label">Or Enter Manual Amount</label>
-                    <div class="manual-input-row">
+                    <label class="group-label">Custom Contribution</label>
+                    <div class="manual-input-row" id="manual-input-container">
                         <span>₹</span>
-                        <input type="number" id="manual-amt-input" placeholder="Enter amount">
+                        <input type="number" id="manual-amt-input" placeholder="0.00">
                     </div>
-                    <button class="cta-secondary" onclick="handleManualAndRegister()">Continue</button>
+                    <span class="err-msg" id="err-manual">Please enter a valid amount.</span>
+                    <button class="cta-secondary" onclick="handleManualAndRegister()">Proceed</button>
                 </div>
             </div>
         </section>
 
         <section id="donor-info" class="screen">
             <button class="back-nav-btn" onclick="showScreen('donate-selection')">← Back</button>
-            <h2 class="section-title">Donor Registration</h2>
+            <h2 class="section-title">Registration</h2>
             <div class="registration-form">
-                <div class="input-group">
-                    <input type="text" id="fname" placeholder="First Name">
-                    <span class="err" id="err-fname">First name is required</span>
-                </div>
+                <input type="text" id="fname" placeholder="First Name *">
+                <span class="err-msg" id="err-fname">First name is mandatory</span>
+
                 <input type="text" id="lname" placeholder="Last Name">
-                <div class="input-group">
-                    <input type="tel" id="u-phone" placeholder="Phone Number">
-                    <span class="err" id="err-phone">Enter 10-digit number</span>
-                </div>
+                
+                <input type="tel" id="u-phone" placeholder="WhatsApp Number *">
+                <span class="err-msg" id="err-phone">Valid phone number is mandatory</span>
+
                 <input type="email" id="u-email" placeholder="Email Address">
+                
                 <select id="u-gender">
                     <option value="">Select Gender</option>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
+                    <option value="Other">Other</option>
                 </select>
+
                 <select id="u-occasion">
-                    <option value="General">Select Occasion</option>
+                    <option value="General">Occasion</option>
                     <option value="Birthday">Birthday</option>
                     <option value="Anniversary">Anniversary</option>
+                    <option value="Memory">In Memory Of</option>
                 </select>
-                <button class="cta-primary" onclick="validateRegistration()">Submit Registration</button>
+
+                <textarea id="u-why" placeholder="Why are you donating food?"></textarea>
+                
+                <button class="cta-primary" onclick="validateRegistration()">Confirm Details</button>
+            </div>
+        </section>
+
+        <section id="whatsapp-gate" class="screen">
+            <div class="wait-container">
+                <div class="timer-icon no-rotate" style="color:#25D366"><ion-icon name="logo-whatsapp"></ion-icon></div>
+                <h2>WhatsApp Verify</h2>
+                <div class="wait-card">
+                    <p>Open WhatsApp to send details to the Chairman. This is <b>compulsory</b> to activate your profile.</p>
+                </div>
+                <button class="cta-primary" style="background:#25D366" onclick="sendToChairman()">Send to Chairman</button>
+            </div>
+        </section>
+
+        <section id="confirm-gate" class="screen">
+            <div class="wait-container">
+                <div class="timer-icon no-rotate" style="color:#ff5f1f"><ion-icon name="checkbox-outline"></ion-icon></div>
+                <h2>Did you send it?</h2>
+                <div class="wait-card">
+                    <p>Verification only starts <b>AFTER</b> you send the message. Did you click send in WhatsApp?</p>
+                </div>
+                <button class="cta-primary" onclick="confirmAndVerify()">Yes, I have sent it</button>
+                <button class="btn-back" onclick="showScreen('whatsapp-gate')">No, let me send again</button>
             </div>
         </section>
 
         <section id="wait-screen" class="screen">
             <div class="wait-container">
-                <div class="timer-icon">⏳</div>
-                <h2>Submitted!</h2>
+                <div class="timer-icon rotate">⏳</div>
+                <h2>Verifying...</h2>
                 <div class="wait-card">
                     <h3 class="highlight-text">WE WILL CALL YOU IN 10 MIN</h3>
-                    <p>PLEASE WAIT FOR TO GO FORWARD</p>
                 </div>
                 <div class="progress-bar-wrap"><div class="progress-fill"></div></div>
             </div>
@@ -100,13 +132,14 @@
 
         <section id="member-profile" class="screen">
             <div class="profile-card-native">
-                <div class="profile-header-bg"><h2>Verified Profile</h2></div>
+                <div class="profile-header-bg"><h2>Verified Member</h2></div>
                 <div class="profile-details">
-                    <div class="reg-id-badge">ID: <span id="disp-reg-id">DW-0000</span></div>
-                    <h2 id="disp-fullname">Full Name</h2>
+                    <div class="reg-id-badge">ID: <span id="disp-reg-id">---</span></div>
+                    <h2 id="disp-fullname">Name</h2>
                     <div class="info-grid">
-                        <div class="info-tile"><label>Phone</label><span id="disp-phone">---</span></div>
-                        <div class="info-tile"><label>Amount</label><span id="disp-amt" style="color:#ff5f1f">₹0</span></div>
+                        <div class="info-tile"><label>Contact</label><span id="disp-phone">---</span></div>
+                        <div class="info-tile"><label>Support</label><span id="disp-box-type">---</span></div>
+                        <div class="info-tile"><label>Amount</label><span id="disp-amt">₹0</span></div>
                         <div class="info-tile"><label>Occasion</label><span id="disp-occasion">---</span></div>
                     </div>
                     <button class="cta-primary" onclick="goHome()">Finish</button>
@@ -115,11 +148,24 @@
         </section>
 
         <section id="impact" class="screen">
-            <h2 class="section-title">Our Impact</h2>
+            <h2 class="section-title">Global Impact</h2>
             <div class="bento-grid">
-                <div class="bento-card tall orange"><span class="count" data-target="125400">0</span><label>Meals Distributed</label></div>
-                <div class="bento-card red"><span class="count" data-target="3200">0</span><label>Blood Donors</label></div>
-                <div class="bento-card dark"><span class="count" data-target="850">0</span><label>Volunteers</label></div>
+                <div class="bento-card tall orange">
+                    <span class="count" data-target="125400">0</span>
+                    <label>Meals Distributed</label>
+                </div>
+                <div class="bento-card dark">
+                    <span class="count" data-target="3200">0</span>
+                    <label>Blood Donors</label>
+                </div>
+                <div class="bento-card dark gold-border">
+                    <span class="count" data-target="850">0</span>
+                    <label>Active Volunteers</label>
+                </div>
+            </div>
+            <div class="stats-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px;">
+                <div class="info-tile"><strong>50+</strong><span>Districts</span></div>
+                <div class="info-tile"><strong>24/7</strong><span>Emergency</span></div>
             </div>
         </section>
 
@@ -130,14 +176,14 @@
                     <h3>Dwaraka Foundation</h3>
                     <p>"Compassion is the root of all service. Dwaraka Foundation belongs to the people."</p>
                 </div>
-
+                
                 <div class="link-group">
                     <label class="group-label">Community & Socials</label>
                     <div class="social-grid">
-                        <a href="#" class="social-card"><span>📸</span> Instagram</a>
-                        <a href="#" class="social-card"><span>🔵</span> Facebook</a>
-                        <a href="#" class="social-card"><span>🐦</span> Twitter</a>
-                        <a href="#" class="social-card"><span>👥</span> Community</a>
+                        <a href="#" class="social-card"><ion-icon name="logo-instagram"></ion-icon> Instagram</a>
+                        <a href="#" class="social-card"><ion-icon name="logo-facebook"></ion-icon> Facebook</a>
+                        <a href="#" class="social-card"><ion-icon name="logo-youtube"></ion-icon> YouTube</a>
+                        <a href="#" class="social-card"><ion-icon name="people-outline"></ion-icon> Community</a>
                     </div>
                 </div>
 
@@ -145,11 +191,11 @@
                     <label class="group-label">Reach Us Directly</label>
                     <div class="contact-list">
                         <a href="tel:+919666315362" class="contact-row">
-                            <div class="icon-circle">📞</div>
-                            <div class="contact-text"><strong>Call Center</strong><span>Emergency & Blood Donation</span></div>
+                            <div class="icon-circle"><ion-icon name="call-outline"></ion-icon></div>
+                            <div class="contact-text"><strong>Call Center</strong><span>Emergency & Blood</span></div>
                         </a>
                         <a href="mailto:contact@dwaraka.org" class="contact-row">
-                            <div class="icon-circle">✉️</div>
+                            <div class="icon-circle"><ion-icon name="mail-outline"></ion-icon></div>
                             <div class="contact-text"><strong>Email Us</strong><span>Official Queries</span></div>
                         </a>
                     </div>
