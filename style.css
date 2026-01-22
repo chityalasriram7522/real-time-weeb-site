@@ -306,6 +306,16 @@ body.white-mode {
     --contact-bg: #f9f9f9; /* Different color so it doesn't mix with white bg */
     --border: rgba(0,0,0,0.1);
 }
+body.white-mode .contact-row, 
+body.white-mode .social-card {
+    background: #f9f9f9 !important; /* Light grey so it's visible on white */
+    color: #000000 !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05); /* Adds a subtle shadow for depth */
+}
+
+body.white-mode .contact-text span {
+    color: #555555 !important; /* Dark grey sub-text */
+}
 
 /* --- FIX FOR ANDROID & IOS RESPONSIVENESS --- */
 html, body {
@@ -345,7 +355,19 @@ body { background: var(--dark); color: var(--text); font-family: 'Plus Jakarta S
 .app-logo { width: 32px; height: 32px; background: var(--primary); border-radius: 8px; color: white; display: grid; place-items: center; font-weight: 800; }
 
 /* Screens */
-.screen { position: absolute; top: 0; left: 0; width: 100%; height: 100vh; padding: 100px 20px 100px; display: none; overflow-y: auto; }
+.screen { 
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    /* Changed from 100vh to 100dvh for mobile browsers */
+    height: 100dvh; 
+    padding: 90px 20px 120px; 
+    display: none; 
+    overflow-y: auto; 
+    /* Smooth scrolling for iOS */
+    -webkit-overflow-scrolling: touch; 
+}
 .screen.active { display: flex; flex-direction: column; }
 
 /* Inputs & Validation */
@@ -413,3 +435,21 @@ input, select, textarea { background: var(--card-bg); border: 1px solid rgba(128
 .contact-list { display: flex; flex-direction: column; gap: 10px; }
 .contact-row { background: var(--card-bg); padding: 18px; border-radius: 22px; display: flex; align-items: center; gap: 15px; text-decoration: none; color: white; border: 1px solid rgba(255,255,255,0.05); }
 .icon-circle { width: 45px; height: 45px; background: rgba(255,255,255,0.05); border-radius: 50%; display: grid; place-items: center; font-size: 1.2rem; }
+/* Responsive adjustments for smaller mobile devices */
+@media (max-width: 375px) {
+    .hero-overlay h1 {
+        font-size: 2rem !important; /* Smaller text for small phones */
+    }
+    .donate-card, .wait-card {
+        padding: 15px !important;
+    }
+    .info-grid {
+        grid-template-columns: 1fr !important; /* Single column on tiny screens */
+    }
+}
+
+/* Ensure images don't break layout */
+img {
+    max-width: 100%;
+    height: auto;
+}
