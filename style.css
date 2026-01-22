@@ -58,7 +58,7 @@ body {
 /* About & Socials */
 .about-scroll-container { display: flex; flex-direction: column; gap: 10px; }
 .profile-section { text-align: center; padding: 20px 0; }
-.profile-img img{ width:78px; height:77px; background: #333; border-radius: 50%; margin: 0 auto 15px;}
+.profile-img img{ width:76px; height:77px; background: #333; border-radius: 50%; margin: 0 auto 15px;}
 .group-label { display: block; font-size: 0.65rem; color: #666; text-transform: uppercase; letter-spacing: 1.5px; margin: 20px 0 10px 5px; font-weight: 800; }
 .social-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .social-card { background: var(--card-bg); padding: 18px; border-radius: 20px; text-decoration: none; color: white; font-size: 0.8rem; font-weight: 600; display: flex; align-items: center; gap: 10px; }
@@ -288,11 +288,52 @@ input:focus { border-color: var(--primary); }
 
 @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 /* Color Variables */
+/* --- THEME VARIABLES --- */
 :root { 
-    --primary: #ff5f1f; --dark: #0f1113; --card-bg: #1c1f23; 
-    --text: #ffffff; --error: #ff4d4d; --glass: rgba(255, 255, 255, 0.05);
+    --primary: #ff5f1f; 
+    --dark: #0f1113; 
+    --card-bg: #1c1f23; 
+    --text: #ffffff;  
+    --contact-bg: #1c1f23; /* Dark mode contact color */
+    --border: rgba(128,128,128,0.2);
 }
-body.white-mode { --dark: #f2f2f7; --card-bg: #ffffff; --text: #000000; }
+
+/* --- WHITE MODE FIXES --- */
+body.white-mode { 
+    --dark: #ffffff; 
+    --card-bg: #f2f2f7; 
+    --text: #000000; /* Black text for visibility */
+    --contact-bg: #f9f9f9; /* Different color so it doesn't mix with white bg */
+    --border: rgba(0,0,0,0.1);
+}
+
+/* --- FIX FOR ANDROID & IOS RESPONSIVENESS --- */
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    /* Prevents "rubber-banding" on iPhones */
+    position: fixed; 
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Apply the contact background variable */
+.contact-row { 
+    background: var(--contact-bg) !important; 
+    color: var(--text) !important;
+    border: 1px solid var(--border);
+    transition: background 0.3s ease;
+}
+
+/* Fix text colors for inputs in white mode */
+body.white-mode input, 
+body.white-mode select, 
+body.white-mode textarea {
+    color: #000000 !important;
+    background: #ffffff;
+}
 
 * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 body { background: var(--dark); color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; overflow: hidden; transition: 0.4s; }
