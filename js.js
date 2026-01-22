@@ -119,12 +119,33 @@ function setAmountAndRegister(amt, label) {
 
 async function confirmAndVerify() {
     showScreen('wait-screen');
+    
+    // Update UI Elements
     document.getElementById('disp-fullname').innerText = userData.name;
     document.getElementById('disp-phone').innerText = userData.phone;
     document.getElementById('disp-amt').innerText = "₹" + finalDonationAmount;
     document.getElementById('disp-box-type').innerText = selectedBoxType;
     document.getElementById('disp-reg-id').innerText = userData.regID;
     document.getElementById('disp-occasion').innerText = userData.occasion;
+
+    // --- ADD EMAILJS CODE HERE ---
+    const emailParams = {
+        donor_name: userData.name,
+        donor_phone: userData.phone,
+        donor_email: userData.email,
+        amount: finalDonationAmount,
+        support_type: selectedBoxType,
+        reg_id: userData.regID,
+        occasion: userData.occasion
+    };
+
+    emailjs.send('service_1eg86sq', 'template_kmxdipd', emailParams)
+        .then(() => {
+            console.log('Email sent successfully!');
+        }, (error) => {
+            console.log('Email failed...', error);
+        });
+    // ------------------------------
 
     gsap.to(".progress-fill", { width: "100%", duration: 4, onComplete: () => showScreen('member-profile') });
 
